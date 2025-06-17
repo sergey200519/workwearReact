@@ -9,16 +9,19 @@ import Contacts from "./pages/Contacts";
 
 const App = () => (
   <Router>
-    <Header />
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/product/:id" element={<ProductDetail />} /> 
-      <Route path="/cart" element={<Cart />} />
-
-      <Route path="/about" element={<About />} />
-      <Route path="/contacts" element={<Contacts />} />
-    </Routes>
-    <Footer />
+    <div className="app-container">
+      <Header />
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/product/:id" element={<ProductDetail />} /> 
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contacts" element={<Contacts />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
   </Router>
 );
 

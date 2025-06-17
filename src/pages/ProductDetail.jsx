@@ -21,7 +21,10 @@ const ProductDetail = () => {
   if (!product) return <div>Товар не найден</div>;
 
   const imageUrl = product.image
-    ? product.image.replace("https://specodegda.ru", "https://www.specodegda.ru/")
+    ? product.image.replace(
+        "https://specodegda.ru",
+        "https://www.specodegda.ru/"
+      )
     : "/photo.png";
 
   return (
@@ -49,10 +52,15 @@ const ProductDetail = () => {
       </ul>
 
       <h4>Документы:</h4>
-      <ul>
+      <ul className="documents-list">
         {product.documents?.map((doc, i) => (
           <li key={i}>
-            <a href={doc.url} target="_blank" rel="noreferrer">
+            <a
+              href={doc.url}
+              target="_blank"
+              rel="noreferrer"
+              className="document-link"
+            >
               {doc.name}
             </a>
           </li>
