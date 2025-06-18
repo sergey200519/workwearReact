@@ -14,15 +14,17 @@ const Cart = () => {
   };
 
   return (
-    <div>
-      <h1>Корзина</h1>
+    <div className="cart-container">
+      <h1 className="cart-title">Корзина</h1>
       {cart.length === 0 ? (
-        <p>Корзина пуста</p>
+        <p className="cart-empty">Корзина пуста</p>
       ) : (
         cart.map((item) => (
-          <div key={item.product_id}>
-            <h3>{item.name}</h3>
-            <p>{item.price_retail} ₽</p>
+          <div className="cart-item" key={item.product_id}>
+            <div>
+              <h3>{item.name}</h3>
+              <p>{item.price_retail} ₽</p>
+            </div>
             <button onClick={() => remove(item.product_id)}>Удалить</button>
           </div>
         ))
