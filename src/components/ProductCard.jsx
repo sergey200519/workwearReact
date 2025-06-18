@@ -1,15 +1,24 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-const ProductCard = ({ product }) => {
-  const addToCart = () => {
+const ProductCard = ({ product, onAddToCart }) => {
+  const [inCart, setInCart] = useState(false);
+
+  useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    cart.push(product);
-    localStorage.setItem("cart", JSON.stringify(cart));
+    setInCart(cart.some((item) => item.product_id === product.product_id));
+  }, [product.product_id]);
+
+  const addToCart = () => {
+    if (!inCart) {
+      onAddToCart(product);
+      setInCart(true); // обновляем локальное состояние
+    }
   };
 
   const imageUrl = product.image
     ? product.image.replace("https://specodegda.ru", "https://www.specodegda.ru/")
-    : "/photo.png";
+    : "/workwearReact/photo.png";
 
   return (
     <div className="card">
@@ -19,7 +28,9 @@ const ProductCard = ({ product }) => {
       </Link>
       <p>{product.price_retail} ₽</p>
       <p>{product.state}</p>
-      <button onClick={addToCart}>Добавить в корзину</button>
+      <button onClick={addToCart} disabled={inCart}>
+        {inCart ? "Уже в корзине" : "Добавить в корзину"}
+      </button>
     </div>
   );
 };

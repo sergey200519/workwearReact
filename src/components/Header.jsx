@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const Header = () => (
+const Header = ({ cartCount }) => (
   <header>
     <nav>
       <ul>
@@ -8,7 +8,9 @@ const Header = () => (
           <Link to="/">Каталог</Link>
         </li>
         <li>
-          <Link to="/cart">Корзина</Link>
+          <Link to="/cart">
+            Корзина {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+          </Link>
         </li>
         <li>
           <Link to="/about">О нас</Link>

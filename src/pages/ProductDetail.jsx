@@ -1,21 +1,38 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import productsData from "../data/products.json";
 
-const ProductDetail = () => {
+const ProductDetail = ({ onAddToCart }) => {
   const { id } = useParams();
+  const [productsData, setProductsData] = useState([]);
   const [product, setProduct] = useState(null);
+  const [inCart, setInCart] = useState(false);
 
   useEffect(() => {
-    const foundProduct = productsData.find((p) => p.product_id === id);
-    setProduct(foundProduct);
-  }, [id]);
+    if (product) {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      setInCart(cart.some((item) => item.product_id === product.product_id));
+    }
+  }, [product]);
+
+  useEffect(() => {
+    fetch("/workwearReact/data/products.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setProductsData(data);
+      })
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    if (productsData.length) {
+      const foundProduct = productsData.find((p) => p.product_id === id);
+      setProduct(foundProduct);
+    }
+  }, [id, productsData]);
 
   const addToCart = () => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    cart.push(product);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    alert("Товар добавлен в корзину");
+    onAddToCart(product);
+    setInCart(true);
   };
 
   if (!product) return <div>Товар не найден</div>;
@@ -25,7 +42,7 @@ const ProductDetail = () => {
         "https://specodegda.ru",
         "https://www.specodegda.ru/"
       )
-    : "/photo.png";
+    : "workwearReact/photo.png";
 
   return (
     <div className="product-detail">
@@ -35,7 +52,9 @@ const ProductDetail = () => {
       <p>{product.state}</p>
       <p>{product.description}</p>
 
-      <button onClick={addToCart}>Добавить в корзину</button>
+      <button onClick={addToCart} disabled={inCart}>
+        {inCart ? "Уже в корзине" : "Добавить в корзину"}
+      </button>
 
       <h4>Особенности:</h4>
       <ul>
